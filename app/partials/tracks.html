@@ -1,0 +1,54 @@
+<div data-ng-hide="tracks.length == 0">
+
+    <div class="table-wrapper">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Song ID</th>
+                        <th>Position</th>
+                        <th>Title</th>
+                        <th>Writer(s)</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody data-sort-tracks>
+                    <tr id="order_{{ track.hotTrackId }}" data-ng-repeat="track in tracks">
+                        <td>{{ track.hotTrackId }}</td>
+                        <td>{{ track.songId }}</td>
+                        <td>{{ track.hotTrackPosition }}</td>
+                        <td>{{ track.hotTrackTitle }}</td>
+                        <td>{{ track.hotTrackWriter }}</td>
+
+                        <td>
+                            <a data-ng-href="{{ track.hotTrackLink }}" target="_blank">
+                                <img class="img-responsive" src="imgs/play43.png">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="" data-ng-click="deleteTrack(track)" class="delete">
+                                <img class="img-responsive" src="imgs/delete30.png">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div data-ng-show="tracks.length == 0">
+    <hr>
+    <div class="form-group">
+        <p>There are no songs please add some :).</p>
+    </div>
+    <hr>
+</div>
+
+<div class="form-group">
+    <a class="btn btn-primary" ng-href="/">View Songs</a>
+</div>

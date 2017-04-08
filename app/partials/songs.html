@@ -1,0 +1,132 @@
+<div data-ng-hide="songs.length == 0">
+
+    <h2>Writer</h2>
+    <select class="writer-box pull-left" data-ng-model="writer" size="10" data-ng-options="writer.writer + ' (' + writer.total + ')' for writer in writers track by writer.writer | filter: search"
+        data-ng-change="updateGenres()">
+        <option data-ng-if="false"></option>
+    </select>
+    <h2>Genres</h2>
+    <select class="writer-box pull-left" data-ng-model="genre" size="10" data-ng-options="genre.genres + ' (' + genre.total + ')' for genre in genres track by genre.genres"
+        data-ng-change="filter()">
+        <option data-ng-if="false"></option>
+    </select>
+
+    <div class="row">
+        <div class="col-md-12" data-ng-show="refine()">
+            <p>Search Refined:</p>
+            <button type="button" data-cancel-button class="search-tag pull-left btn btn-success" data-ng-show="writer" data-ng-click="updateOptions('writer')">{{ writer.writer }} (remove)</button>
+            <button type="button" data-cancel-button class="search-tag pull-left btn btn-success" data-ng-show="genre" data-ng-click="updateOptions('genre')">{{ genre.genres }} (remove)</button>
+
+        </div>
+    </div>
+
+    <p class="clear"></p>
+
+    <hr>
+
+    <p class="clear"></p>
+
+    <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="search" class="form-control" name="search" placeholder="Search" data-ng-change="filter()" data-ng-model="search">
+        <a class="input-group-addon red" href="" data-ng-click="search=''; filter()"><span class="glyphicon glyphicon-remove-circle" ></span></a>
+    </div>
+
+    <p class="clear"></p>
+
+    <p>Results: {{ filteredItems }} of {{ songs.length }}</p>
+
+    <p class="clear"></p>
+
+    <div class="table-wrapper">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Title <a href="" data-ng-click="sortBy('title')"><i class="glyphicon glyphicon-sort"></i></a>
+                        </th>
+                        <th>Album <a href="" data-ng-click="sortBy('album')"><i class="glyphicon glyphicon-sort"></i></a>
+                        </th>
+                        <th>Writer(s) <a href="" data-ng-click="sortBy('writer')"><i class="glyphicon glyphicon-sort"></i></a>
+                        </th>
+                        <th>Genre(s) <a href="" data-ng-click="sortBy('genres')"><i class="glyphicon glyphicon-sort"></i></a>
+                        </th>
+                        <th>Year <a href="" data-ng-click="sortBy('year')"><i class="glyphicon glyphicon-sort"></i></a>
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="song in filtered = ( songs | filter:{$:search, genres: genre.genres } | filter: { writer: writer.writer }:true) | orderBy:sortByType:reverse | startFrom:(currentPage-1)*entryLimit | limitTo:entryLimit">
+                        <td>{{ song.title }}</td>
+                        <td>{{ song.album }}</td>
+                        <td>{{ song.writer }}</td>
+                        <td>{{ song.genres }}</td>
+                        <td>{{ song.year }}</td>
+
+                        <td>
+                            <a href="" data-ng-href="{{ song.songLink }}" target="_blank">
+                                <img class="img-responsive" src="imgs/play43.png">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="" data-ng-if="song.videoLink" data-lity data-lity-target="{{ song.videoLink }}">
+                                <img class='img-responsive' src='imgs/television4.png'>
+                            </a>
+                        </td>
+                        <td>
+                            <a data-ng-href="/edit/{{ song.songId }}">
+                                <img class="img-responsive" src="imgs/pencil43.png">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="" data-ng-click="deleteSong(song)" class="delete">
+                                <img class="img-responsive" src="imgs/delete30.png">
+                            </a>
+                        </td>
+                        <td>
+                            <a data-ng-hide="inHotTrack(song)" href="" data-ng-click="addHotTrack(song)">
+                                <img class="img-responsive" src="imgs/add133.png">
+                            </a>
+                            <p data-ng-show="inHotTrack(song)">Added</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="col-md-12" data-ng-show="filteredItems > 0">
+                <div pagination="" page="currentPage" on-select-page="setPage(page)" boundary-links="true" total-items="filteredItems" items-per-page="entryLimit"
+                    class="pagination-small" previous-text="&laquo;" next-text="&raquo;"></div>
+
+            </div>
+        </div>
+
+        <div data-ng-if="(filteredItems) == 0">
+            <p>
+                <strong>No results found...</strong>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div data-ng-show="songs.length == 0">
+    <hr>
+    <div class="form-group">
+        <p>There are no songs please add some :).</p>
+    </div>
+</div>
+
+<hr>
+
+<div class="form-group">
+    <a class="btn btn-primary" href="/add">Add Song</a>
+</div>
+
+<div class="form-group">
+    <a class="btn btn-primary" href="/hot-tracks">View Hot Tracks</a>
+</div>

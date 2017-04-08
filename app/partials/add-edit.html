@@ -1,0 +1,80 @@
+<h1>{{ headerTitle }}</h1>
+
+<form class="form-horizontal" name="songForm" role="form" data-ng-submit="saveSong()" novalidate>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_title">Title *</lable>
+            <input type="text" class="form-control" name="post_title" data-ng-model="song.title" placeholder="Title" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_album">Album *</lable>
+            <input type="text" class="form-control" name="post_album" data-ng-model="song.album" placeholder="Album" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_writer">Writer(s) *</lable>
+            <input type="text" class="form-control" name="post_writer" data-ng-model="song.writer" placeholder="Writer(s)" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_genre">Genre * (Hold down the CTRL or SHIFT key while selecting)</lable>
+            <select class="form-control pull-left" data-ng-model="songGenres" data-ng-options="genre.genre for genre in genres track by genre.genreId"
+                size="10" multiple required>
+                <option data-ng-if="false"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_year">Year *</lable>
+            <input type="text" class="form-control" name="post_year" data-ng-model="song.year" data-ng-maxlength="4" data-ng-minlength="4"
+                data-ng-pattern="/^\d+$/" placeholder="Year" required>
+        </div>
+    </div>
+
+    <div class="col-sm-10 alert alert-danger" data-ng-show="yearError()">
+        <p>Add correct year (i.e. 1990)</p>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_link">Link To Song *</lable>
+            <input type="text" class="form-control" name="post_link" data-ng-model="song.songLink" placeholder="Link To Song" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10">
+            <lable for="post_video">YouTube Video (Optional)</lable>
+            <input type="text" class="form-control" name="post_video" data-ng-model="song.videoLink" placeholder="YouTube Video (Optional)">
+        </div>
+    </div>
+
+    <div class="col-sm-10 alert alert-success" data-ng-show="sucess">
+        <p>{{ sMessage }}</p>
+    </div>
+
+    <div class="col-sm-10 alert alert-danger" data-ng-show="error">
+        <p>{{ eMessage }}</p>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <button type="submit" data-ng-disabled="editSongForm.$invalid" class="btn btn-success">Update</button>
+            <button ng-show="add" type="reset" data-ng-click="clear()" class="btn btn-danger">Clear</button>
+        </div>
+    </div>
+
+</form>
+
+<div class="form-group">
+    <a class="btn btn-primary" ng-href="/">Back</a>
+</div>
